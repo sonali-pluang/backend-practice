@@ -1,4 +1,4 @@
-import amqp from "amqplib/callback_api"
+import amqp from "amqplib/callback_api.js"
 
 let ch = null
 const CONN_URL = "http://localhost:15672/"
