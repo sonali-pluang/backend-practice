@@ -1,20 +1,21 @@
 import amqp from "amqplib/callback_api.js"
 
 let ch = null
-const CONN_URL = "http://localhost:15672/"
+const CONN_URL = "amqp://localhost"
 amqp.connect(CONN_URL, (err, connection)=>{
     if(err)
         throw err
 
     connection.createChannel((err, channel) => {
         if(err) throw err;
+        ch = channel
+
+        const QUEUE = "test"
+        ch.assertQueue(QUEUE)
+
+        ch.sendToQueue(QUEUE, Buffer.from("Data in RabbitMQ"))
+        console.log("message sent")
     })
-
-    const QUEUE = "test"
-    channel.assertQueue(QUEUE)
-
-    channel.sendToQueue(QUEUE, Buffer.from("Message present in RabbitMQ"))
-    console.log("message sent")
 })
 
 process.on ('exit', () =>{
